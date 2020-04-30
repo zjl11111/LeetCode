@@ -1,0 +1,96 @@
+面试题02.02思路：
+使用双指针。
+1.创建两个指针cur、end；
+2.先令end指针先走k步，然后再让cur指针开始走；
+3.当end指针为指向空值时停止走动，此时cur指针指向目标节点，显示cur指针的值即可；
+
+代码：
+class Solution {
+    public int kthToLast(ListNode head, int k) {
+        ListNode end = new ListNode(0);
+        end.next = head;
+        ListNode cur = end;
+        for(int i = 0;i<k;i++){
+            end = end.next;
+        }
+        while(end != null){
+            cur = cur.next;
+            end = end.next;
+        }
+        return cur.val;
+    }
+}
+
+第19题：
+解题思路：
+与上一题相识，也是运用双指针。
+1.创建两个指针start和end，开始先让end先走n步；
+2.当end不为空时，两个指针都同时移动，否则停止移动，此时start指向的是目标节点的前一个节点；
+3.跳过目标节点，返回链表即可
+代码如下：
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        
+        ListNode pre = new ListNode(0);
+        pre.next = head;
+        ListNode start = pre;
+        ListNode end = pre;
+        while(n != 0){
+            end = end.next;
+            n--;
+        }
+        while(end.next != null){
+            start = start.next;
+            end = end.next;
+        }
+        start.next = start.next.next;
+        return pre.next;
+    }
+}
+
+第25题：
+解题思路：
+本题的关键是范围反转链表，需要记录的标志点比较多，需要建立多个指针来记录相应的节点，以便再不同的范围内反转链表。
+1.确定范围：
+使用两个指针start和end来确定，让end先移动k，让star到达起始点，两指针范围就是目标范围；
+2.边界条件：
+如果end的指针指向空值，则证明剩余节点不足，此时立即跳出循环；
+3.令符合条件范围内的节点翻转；并改变指针的位置；
+4.继续循环，知道不满足条件退出
+代码如下：
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode dumy = new ListNode(0);
+        dumy.next = head;
+        ListNode pre = dumy;
+        ListNode end = dumy;
+        while(end != null){
+            for(int i = 0;i < k && end != null;i++){
+                end = end.next;
+            }
+            if(end == null) break;
+            //开始反转操作
+            ListNode start = pre.next;
+            ListNode pLast = end.next;
+            end.next = null;
+            pre.next = revers(start);
+            //改变初始位置
+            start.next = pLast;
+            pre = start;
+            end = pre;
+        }
+        return dumy.next;
+    }
+    public ListNode revers(ListNode head){
+        ListNode pre = null;
+        ListNode cur = head;
+        while(cur != null){
+            ListNode p = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = p;
+        }
+        return pre;
+    }
+   
+}
