@@ -1,0 +1,9 @@
+88题
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+             System.arraycopy(nums2,0,nums1,m,n);//源数组，复制起始位置，目标数组，目标数组起始位置，复制长度
+             Arrays.sort(nums1);//升序排列
+
+    }
+}
+36题
